@@ -8,6 +8,9 @@ export enum TaskStatus {
   IN_PROGRESS = 'in-progress',
   COMPLETED = 'completed',
   EXTENSION_REQUESTED = 'extension-requested',
+  APPROVED = 'approved',
+  ABANDONED = 'abandoned',
+  CLOSED = 'closed',
 }
 
 export enum TaskType {
@@ -86,6 +89,33 @@ export class Task extends BaseEntity {
 
   @Column({ type: 'text', nullable: true })
   rejectionReason: string;
+
+  @Column({ nullable: true })
+  approvedBy: number;
+
+  @Column({ type: 'text', nullable: true })
+  approvalRemarks: string;
+
+  @Column({ type: 'timestamp', nullable: true })
+  approvedAt: Date;
+
+  @Column({ nullable: true })
+  abandonedBy: number;
+
+  @Column({ type: 'text', nullable: true })
+  abandonReason: string;
+
+  @Column({ type: 'timestamp', nullable: true })
+  abandonedAt: Date;
+
+  @Column({ nullable: true })
+  closedBy: number;
+
+  @Column({ type: 'text', nullable: true })
+  closeRemarks: string;
+
+  @Column({ type: 'timestamp', nullable: true })
+  closedAt: Date;
 
   @ManyToOne(() => User, (user) => user.assignedTasks, {
     onDelete: 'CASCADE',

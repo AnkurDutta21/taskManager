@@ -50,6 +50,10 @@ export class UsersService {
     return await this.usersRepository.findOne({ where: { email } });
   }
 
+  async findByPhone(phone: string): Promise<User | null> {
+    return await this.usersRepository.findOne({ where: { phone } });
+  }
+
   async update(id: number, userData: any): Promise<User> {
     const user = await this.findOne(id);
     Object.assign(user, userData);

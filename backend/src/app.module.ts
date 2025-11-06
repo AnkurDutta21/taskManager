@@ -14,6 +14,7 @@ import { ChatsModule } from './modules/chats/chats.module';
 import { QueriesModule } from './modules/queries/queries.module';
 import { AlertsModule } from './modules/alerts/alerts.module';
 import { ReportsModule } from './modules/reports/reports.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { ReportsModule } from './modules/reports/reports.module';
     QueriesModule,
     AlertsModule,
     ReportsModule,
+    DashboardModule,
   ],
 })
 export class AppModule {}
