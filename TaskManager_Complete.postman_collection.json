@@ -1,0 +1,144 @@
+{
+	"info": {
+		"name": "Task Manager API - Complete",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"description": "Complete API collection for Task Manager with all endpoints"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [{"key": "token", "value": "{{access_token}}", "type": "string"}]
+	},
+	"variable": [
+		{"key": "base_url", "value": "http://localhost:3000/api"},
+		{"key": "access_token", "value": ""}
+	],
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{"name": "Register", "event": [{"listen": "test", "script": {"exec": ["if (pm.response.code === 201) { const response = pm.response.json(); if (response.access_token) { pm.collectionVariables.set('access_token', response.access_token); }}"]}}], "request": {"auth": {"type": "noauth"}, "method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"Password123!\",\n  \"employeeId\": \"EMP001\",\n  \"phone\": \"+919876543210\",\n  \"role\": \"admin\"\n}"}, "url": {"raw": "{{base_url}}/auth/register", "host": ["{{base_url}}"], "path": ["auth", "register"]}}},
+				{"name": "Verify OTP", "event": [{"listen": "test", "script": {"exec": ["if (pm.response.code === 200 || pm.response.code === 201) { const response = pm.response.json(); if (response.access_token) { pm.collectionVariables.set('access_token', response.access_token); }}"]}}], "request": {"auth": {"type": "noauth"}, "method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"phone\": \"+919876543210\",\n  \"otp\": \"123456\"\n}"}, "url": {"raw": "{{base_url}}/auth/verify-otp", "host": ["{{base_url}}"], "path": ["auth", "verify-otp"]}}},
+			{"name": "Resend OTP", "request": {"auth": {"type": "noauth"}, "method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"phone\": \"+919876543210\"\n}"}, "url": {"raw": "{{base_url}}/auth/resend-otp", "host": ["{{base_url}}"], "path": ["auth", "resend-otp"]}}},
+			{"name": "Login", "event": [{"listen": "test", "script": {"exec": ["if (pm.response.code === 200 || pm.response.code === 201) { const response = pm.response.json(); if (response.access_token) { pm.collectionVariables.set('access_token', response.access_token); }}"]}}], "request": {"auth": {"type": "noauth"}, "method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"Password123!\"\n}"}, "url": {"raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"]}}},
+				{"name": "Get Profile", "request": {"method": "GET", "url": {"raw": "{{base_url}}/auth/profile", "host": ["{{base_url}}"], "path": ["auth", "profile"]}}},
+				{"name": "Logout", "request": {"method": "POST", "url": {"raw": "{{base_url}}/auth/logout", "host": ["{{base_url}}"], "path": ["auth", "logout"]}}}
+			]
+		},
+		{
+			"name": "Companies",
+			"item": [
+				{"name": "Create Company", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"companyName\": \"Tech Solutions Inc\",\n  \"companyCode\": \"TECH001\",\n  \"industry\": \"Information Technology\",\n  \"email\": \"info@techsolutions.com\",\n  \"phone\": \"+1234567890\"\n}"}, "url": {"raw": "{{base_url}}/companies", "host": ["{{base_url}}"], "path": ["companies"]}}},
+				{"name": "Get All Companies", "request": {"method": "GET", "url": {"raw": "{{base_url}}/companies?page=1&limit=10", "host": ["{{base_url}}"], "path": ["companies"], "query": [{"key": "page", "value": "1"}, {"key": "limit", "value": "10"}]}}},
+				{"name": "Get Company by ID", "request": {"method": "GET", "url": {"raw": "{{base_url}}/companies/1", "host": ["{{base_url}}"], "path": ["companies", "1"]}}},
+				{"name": "Update Company", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"companyName\": \"Tech Solutions Inc - Updated\"\n}"}, "url": {"raw": "{{base_url}}/companies/1", "host": ["{{base_url}}"], "path": ["companies", "1"]}}},
+				{"name": "Delete Company", "request": {"method": "DELETE", "url": {"raw": "{{base_url}}/companies/1", "host": ["{{base_url}}"], "path": ["companies", "1"]}}},
+				{"name": "Get Company Statistics", "request": {"method": "GET", "url": {"raw": "{{base_url}}/companies/1/statistics", "host": ["{{base_url}}"], "path": ["companies", "1", "statistics"]}}}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{"name": "Create User", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Smith\",\n  \"email\": \"jane.smith@example.com\",\n  \"password\": \"Password123!\",\n  \"employeeId\": \"EMP002\",\n  \"role\": \"team_leader\",\n  \"companyId\": 1\n}"}, "url": {"raw": "{{base_url}}/users", "host": ["{{base_url}}"], "path": ["users"]}}},
+				{"name": "Get All Users", "request": {"method": "GET", "url": {"raw": "{{base_url}}/users?page=1&limit=10", "host": ["{{base_url}}"], "path": ["users"], "query": [{"key": "page", "value": "1"}, {"key": "limit", "value": "10"}]}}},
+				{"name": "Get User by ID", "request": {"method": "GET", "url": {"raw": "{{base_url}}/users/1", "host": ["{{base_url}}"], "path": ["users", "1"]}}},
+				{"name": "Update User", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"phone\": \"+1234567892\"\n}"}, "url": {"raw": "{{base_url}}/users/1", "host": ["{{base_url}}"], "path": ["users", "1"]}}},
+				{"name": "Delete User", "request": {"method": "DELETE", "url": {"raw": "{{base_url}}/users/1", "host": ["{{base_url}}"], "path": ["users", "1"]}}},
+				{"name": "Get User Hierarchy", "request": {"method": "GET", "url": {"raw": "{{base_url}}/users/1/hierarchy", "host": ["{{base_url}}"], "path": ["users", "1", "hierarchy"]}}}
+			]
+		},
+		{
+			"name": "Departments",
+			"item": [
+				{"name": "Create Department", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"departmentName\": \"Engineering\",\n  \"departmentCode\": \"ENG001\",\n  \"description\": \"Engineering department\",\n  \"companyId\": 1\n}"}, "url": {"raw": "{{base_url}}/departments", "host": ["{{base_url}}"], "path": ["departments"]}}},
+				{"name": "Get All Departments", "request": {"method": "GET", "url": {"raw": "{{base_url}}/departments", "host": ["{{base_url}}"], "path": ["departments"]}}},
+				{"name": "Get Department by ID", "request": {"method": "GET", "url": {"raw": "{{base_url}}/departments/1", "host": ["{{base_url}}"], "path": ["departments", "1"]}}},
+				{"name": "Update Department", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"departmentName\": \"Engineering - Updated\"\n}"}, "url": {"raw": "{{base_url}}/departments/1", "host": ["{{base_url}}"], "path": ["departments", "1"]}}},
+				{"name": "Delete Department", "request": {"method": "DELETE", "url": {"raw": "{{base_url}}/departments/1", "host": ["{{base_url}}"], "path": ["departments", "1"]}}}
+			]
+		},
+		{
+			"name": "Teams",
+			"item": [
+				{"name": "Create Team", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"teamName\": \"Backend Team\",\n  \"teamCode\": \"BACK001\",\n  \"companyId\": 1,\n  \"teamLeaderId\": 1\n}"}, "url": {"raw": "{{base_url}}/teams", "host": ["{{base_url}}"], "path": ["teams"]}}},
+				{"name": "Get All Teams", "request": {"method": "GET", "url": {"raw": "{{base_url}}/teams", "host": ["{{base_url}}"], "path": ["teams"]}}},
+				{"name": "Get Team by ID", "request": {"method": "GET", "url": {"raw": "{{base_url}}/teams/1", "host": ["{{base_url}}"], "path": ["teams", "1"]}}},
+				{"name": "Update Team", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"teamName\": \"Backend Team - Updated\"\n}"}, "url": {"raw": "{{base_url}}/teams/1", "host": ["{{base_url}}"], "path": ["teams", "1"]}}},
+				{"name": "Delete Team", "request": {"method": "DELETE", "url": {"raw": "{{base_url}}/teams/1", "host": ["{{base_url}}"], "path": ["teams", "1"]}}}
+			]
+		},
+		{
+			"name": "Projects",
+			"item": [
+				{"name": "Create Project", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"projectName\": \"Task Manager App\",\n  \"projectCode\": \"TMA001\",\n  \"startDate\": \"2024-01-01\",\n  \"endDate\": \"2024-12-31\",\n  \"priority\": \"high\"\n}"}, "url": {"raw": "{{base_url}}/projects", "host": ["{{base_url}}"], "path": ["projects"]}}},
+				{"name": "Get All Projects", "request": {"method": "GET", "url": {"raw": "{{base_url}}/projects", "host": ["{{base_url}}"], "path": ["projects"]}}},
+				{"name": "Get Project by ID", "request": {"method": "GET", "url": {"raw": "{{base_url}}/projects/1", "host": ["{{base_url}}"], "path": ["projects", "1"]}}},
+				{"name": "Update Project", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"status\": \"active\"\n}"}, "url": {"raw": "{{base_url}}/projects/1", "host": ["{{base_url}}"], "path": ["projects", "1"]}}},
+				{"name": "Delete Project", "request": {"method": "DELETE", "url": {"raw": "{{base_url}}/projects/1", "host": ["{{base_url}}"], "path": ["projects", "1"]}}}
+			]
+		},
+		{
+			"name": "Tasks",
+			"item": [
+				{"name": "Create One-Time Task", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"taskTitle\": \"Implement Authentication\",\n  \"taskDescription\": \"JWT authentication\",\n  \"assignedTo\": 2,\n  \"assignedBy\": 1,\n  \"priority\": \"high\",\n  \"dueDate\": \"2024-01-30\",\n  \"taskType\": \"oneTime\",\n  \"projectId\": 1\n}"}, "url": {"raw": "{{base_url}}/tasks", "host": ["{{base_url}}"], "path": ["tasks"]}}},
+				{"name": "Create Repetitive Task", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"taskTitle\": \"Daily Standup\",\n  \"taskDescription\": \"Daily report\",\n  \"assignedTo\": 2,\n  \"assignedBy\": 1,\n  \"priority\": \"medium\",\n  \"dueDate\": \"2024-12-31\",\n  \"taskType\": \"repetitive\",\n  \"repetitiveType\": \"daily\",\n  \"startDate\": \"2024-01-01\",\n  \"endDate\": \"2024-12-31\"\n}"}, "url": {"raw": "{{base_url}}/tasks", "host": ["{{base_url}}"], "path": ["tasks"]}}},
+				{"name": "Get All Tasks", "request": {"method": "GET", "url": {"raw": "{{base_url}}/tasks", "host": ["{{base_url}}"], "path": ["tasks"]}}},
+				{"name": "Get Task by ID", "request": {"method": "GET", "url": {"raw": "{{base_url}}/tasks/1", "host": ["{{base_url}}"], "path": ["tasks", "1"]}}},
+				{"name": "Update Task Status", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"status\": \"in-progress\"\n}"}, "url": {"raw": "{{base_url}}/tasks/1", "host": ["{{base_url}}"], "path": ["tasks", "1"]}}},
+				{"name": "Request Extension", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"status\": \"extension-requested\",\n  \"requestedExtensionDate\": \"2024-02-15\",\n  \"extensionReason\": \"Need more time\"\n}"}, "url": {"raw": "{{base_url}}/tasks/1", "host": ["{{base_url}}"], "path": ["tasks", "1"]}}},
+				{"name": "Delete Task", "request": {"method": "DELETE", "url": {"raw": "{{base_url}}/tasks/1", "host": ["{{base_url}}"], "path": ["tasks", "1"]}}}
+			]
+		},
+		{
+			"name": "Holidays",
+			"item": [
+				{"name": "Create Holiday", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"New Year\",\n  \"date\": \"2024-01-01\",\n  \"type\": \"public\",\n  \"isRecurring\": true\n}"}, "url": {"raw": "{{base_url}}/holidays", "host": ["{{base_url}}"], "path": ["holidays"]}}},
+				{"name": "Get All Holidays", "request": {"method": "GET", "url": {"raw": "{{base_url}}/holidays", "host": ["{{base_url}}"], "path": ["holidays"]}}},
+				{"name": "Get Holiday by ID", "request": {"method": "GET", "url": {"raw": "{{base_url}}/holidays/1", "host": ["{{base_url}}"], "path": ["holidays", "1"]}}},
+				{"name": "Update Holiday", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"New Year - Updated\"\n}"}, "url": {"raw": "{{base_url}}/holidays/1", "host": ["{{base_url}}"], "path": ["holidays", "1"]}}},
+				{"name": "Delete Holiday", "request": {"method": "DELETE", "url": {"raw": "{{base_url}}/holidays/1", "host": ["{{base_url}}"], "path": ["holidays", "1"]}}}
+			]
+		},
+		{
+			"name": "Designations",
+			"item": [
+				{"name": "Create Designation", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"title\": \"Senior Software Engineer\",\n  \"level\": 5\n}"}, "url": {"raw": "{{base_url}}/designations", "host": ["{{base_url}}"], "path": ["designations"]}}},
+				{"name": "Get All Designations", "request": {"method": "GET", "url": {"raw": "{{base_url}}/designations", "host": ["{{base_url}}"], "path": ["designations"]}}},
+				{"name": "Get Designation by ID", "request": {"method": "GET", "url": {"raw": "{{base_url}}/designations/1", "host": ["{{base_url}}"], "path": ["designations", "1"]}}},
+				{"name": "Update Designation", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"level\": 6\n}"}, "url": {"raw": "{{base_url}}/designations/1", "host": ["{{base_url}}"], "path": ["designations", "1"]}}},
+				{"name": "Delete Designation", "request": {"method": "DELETE", "url": {"raw": "{{base_url}}/designations/1", "host": ["{{base_url}}"], "path": ["designations", "1"]}}}
+			]
+		},
+		{
+			"name": "Chats",
+			"item": [
+				{"name": "Create Project Chat", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"message\": \"Project kickoff meeting\",\n  \"chatType\": \"project\",\n  \"projectId\": 1,\n  \"userId\": 1\n}"}, "url": {"raw": "{{base_url}}/chats", "host": ["{{base_url}}"], "path": ["chats"]}}},
+				{"name": "Create Task Chat", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"message\": \"Need clarification\",\n  \"chatType\": \"task\",\n  \"taskId\": 1,\n  \"userId\": 2\n}"}, "url": {"raw": "{{base_url}}/chats", "host": ["{{base_url}}"], "path": ["chats"]}}},
+				{"name": "Get Project Chats", "request": {"method": "GET", "url": {"raw": "{{base_url}}/chats?chatType=project&projectId=1", "host": ["{{base_url}}"], "path": ["chats"], "query": [{"key": "chatType", "value": "project"}, {"key": "projectId", "value": "1"}]}}},
+				{"name": "Get Task Chats", "request": {"method": "GET", "url": {"raw": "{{base_url}}/chats?chatType=task&taskId=1", "host": ["{{base_url}}"], "path": ["chats"], "query": [{"key": "chatType", "value": "task"}, {"key": "taskId", "value": "1"}]}}},
+				{"name": "Delete Chat", "request": {"method": "DELETE", "url": {"raw": "{{base_url}}/chats/1", "host": ["{{base_url}}"], "path": ["chats", "1"]}}}
+			]
+		},
+		{
+			"name": "Queries",
+			"item": [
+				{"name": "Create Query", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"subject\": \"Task Assignment Issue\",\n  \"message\": \"Unable to see assigned task\",\n  \"userId\": 2,\n  \"taskId\": 1\n}"}, "url": {"raw": "{{base_url}}/queries", "host": ["{{base_url}}"], "path": ["queries"]}}},
+				{"name": "Get All Queries", "request": {"method": "GET", "url": {"raw": "{{base_url}}/queries", "host": ["{{base_url}}"], "path": ["queries"]}}},
+				{"name": "Get Query by ID", "request": {"method": "GET", "url": {"raw": "{{base_url}}/queries/1", "host": ["{{base_url}}"], "path": ["queries", "1"]}}},
+				{"name": "Update Query Status", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"status\": \"in-progress\"\n}"}, "url": {"raw": "{{base_url}}/queries/1", "host": ["{{base_url}}"], "path": ["queries", "1"]}}},
+				{"name": "Reply to Query", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"message\": \"Looking into this\",\n  \"queryId\": 1,\n  \"userId\": 1\n}"}, "url": {"raw": "{{base_url}}/queries/1/replies", "host": ["{{base_url}}"], "path": ["queries", "1", "replies"]}}},
+				{"name": "Get Query Replies", "request": {"method": "GET", "url": {"raw": "{{base_url}}/queries/1/replies", "host": ["{{base_url}}"], "path": ["queries", "1", "replies"]}}},
+				{"name": "Delete Query", "request": {"method": "DELETE", "url": {"raw": "{{base_url}}/queries/1", "host": ["{{base_url}}"], "path": ["queries", "1"]}}}
+			]
+		},
+		{
+			"name": "Alerts",
+			"item": [
+				{"name": "Create Alert", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"title\": \"Task Deadline\",\n  \"message\": \"Task due in 2 days\",\n  \"type\": \"warning\",\n  \"userId\": 2\n}"}, "url": {"raw": "{{base_url}}/alerts", "host": ["{{base_url}}"], "path": ["alerts"]}}},
+				{"name": "Get All Alerts", "request": {"method": "GET", "url": {"raw": "{{base_url}}/alerts?userId=2", "host": ["{{base_url}}"], "path": ["alerts"], "query": [{"key": "userId", "value": "2"}]}}},
+				{"name": "Get Alert by ID", "request": {"method": "GET", "url": {"raw": "{{base_url}}/alerts/1", "host": ["{{base_url}}"], "path": ["alerts", "1"]}}},
+				{"name": "Mark Alert as Read", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"isRead\": true\n}"}, "url": {"raw": "{{base_url}}/alerts/1", "host": ["{{base_url}}"], "path": ["alerts", "1"]}}},
+				{"name": "Delete Alert", "request": {"method": "DELETE", "url": {"raw": "{{base_url}}/alerts/1", "host": ["{{base_url}}"], "path": ["alerts", "1"]}}}
+			]
+		}
+	]
+}
